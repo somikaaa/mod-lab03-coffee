@@ -24,8 +24,8 @@ TEST(AutomataTest, OffTurnsOffAutomat) {
 
 TEST(AutomataTest, CoinAddsToCash) {
     Automata vendingMachine;
-    vendingMachine.coin(2.0);
-    EXPECT_EQ(vendingMachine.cash, 2.0);
+    vendingMachine.coin(5.0);
+    EXPECT_EQ(vendingMachine.cash, 5.0);
 }
 
 TEST(AutomataTest, ChoiceDoesNotChangeStateIfNotOn) {
@@ -45,7 +45,7 @@ TEST(AutomataTest, CheckReturnsTrueIfEnoughCash) {
     Automata vendingMachine;
     vendingMachine.on();
     vendingMachine.choice(0); // Выбор напитка
-    vendingMachine.coin(2.0);
+    vendingMachine.coin(5.0);
     EXPECT_TRUE(vendingMachine.check());
 }
 
