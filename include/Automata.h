@@ -9,22 +9,22 @@ enum class STATES {
 };
 
 class Automata {
-private:
+ private:
     double cash;
     std::vector<std::string> menu;
     std::vector<double> prices;
     STATES state;
     int choiceIndex;
 
-public:
+ public:
     Automata();
     void on();
     void off();
     void coin(double amount);
-    void getMenu();  
-    STATES getState();  
+    void getMenu();
+    STATES getState();
     void choice(int index);
-    bool check(int index) ;
+    bool check(int index);
     void cancel();
     void cook(int index);
     void finish();
