@@ -1,81 +1,88 @@
 // Copyright 2022 GHA Test Team
-
-#include <gtest/gtest.h>
 #include "Automata.h"
-TEST(AutomataTest, ConstructorInitializesCorrectly) {
-    Automata vendingMachine;
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::OFF);
-    EXPECT_EQ(vendingMachine.cash, 0.0);
-    EXPECT_EQ(vendingMachine.choiceIndex, -1);
+#include <gtest/gtest.h>
+
+
+//тест на включение автомата
+TEST(AutomataTest, IsOnTest) {
+	Automata automata;
+	automata.on();
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
-TEST(AutomataTest, OnTurnsOnAutomat) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::ON);
+//тест на выключение автомата
+TEST(AutomataTest, IsOffTest) {
+	Automata automata;
+	automata.on();
+	automata.off();
+	EXPECT_EQ(automata.getState(), STATES::OFF);
 }
 
-TEST(AutomataTest, OffTurnsOffAutomat) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.off();
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::OFF);
+//тест на чтение меню
+TEST(AutomataTest, ReadMenuTest) {
+	Automata automata;
+	automata.on();
+	automata.getMenu();
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
-TEST(AutomataTest, CoinAddsToCash) {
-    Automata vendingMachine;
-    vendingMachine.coin(5.0);
-    EXPECT_EQ(vendingMachine.cash, 5.0);
+//тест на внесение денег
+TEST(AutomataTest, CoinsTest) {
+	Automata automata;
+	automata.on();
+	automata.coin(50);
+	EXPECT_EQ(automata.getState(), STATES::ACCEPT);
 }
 
-TEST(AutomataTest, ChoiceDoesNotChangeStateIfNotOn) {
-    Automata vendingMachine;
-    vendingMachine.choice(0); // Выбор напитка
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::OFF);
+//тест на отмену покупки и возврат денег
+TEST(AutomataTest, CancelTest) {
+	Automata automata;
+	automata.on();
+	automata.coin(10);
+	automata.cancel();
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
-TEST(AutomataTest, ChoiceChangesStateIfOn) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::COOKING);
+// тест на имитацию приготовления кофе(1)
+TEST(AutomataTest, CookTest1) {
+	Automata automata;
+	automata.on();
+	automata.coin(50);
+	automata.choice(1);
+	EXPECT_EQ(automata.getState(), STATES::COOK);
 }
 
-TEST(AutomataTest, CheckReturnsTrueIfEnoughCash) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    vendingMachine.coin(5.0);
-    EXPECT_TRUE(vendingMachine.check());
+// тест на имитацию приготовления чая(2)
+TEST(AutomataTest, CookTest2) {
+	Automata automata;
+	automata.on();
+	automata.coin(50);
+	automata.choice(2);
+	EXPECT_EQ(automata.getState(), STATES::COOK);
 }
 
-TEST(AutomataTest, CheckReturnsFalseIfNotEnoughCash) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    EXPECT_FALSE(vendingMachine.check());
+// тест на имитацию приготовления горячего шоколада(6)
+TEST(AutomataTest, CookTest3) {
+	Automata automata;
+	automata.on();
+	automata.coin(50);
+	automata.choice(6);
+	EXPECT_EQ(automata.getState(), STATES::COOK);
 }
 
-TEST(AutomataTest, CancelTurnsOffAutomat) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    vendingMachine.cancel();
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::OFF);
+//тест на имитацию выбора напитка без внесения денег
+TEST(AutomataTest, ChoiseWithoutMoneyTest) {
+	Automata automata;
+	automata.on();
+	automata.choice(6);
+	EXPECT_EQ(automata.getState(), STATES::ACCEPT);
 }
 
-TEST(AutomataTest, CookChangesStateToFinished) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    vendingMachine.cook();
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::FINISHED);
+// тест на имитацию завершения приотовления напитка
+TEST(AutomataTest, FinishTest) {
+	Automata automata;
+	automata.on();
+	automata.finish();
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
-TEST(AutomataTest, FinishTurnsOffAutomat) {
-    Automata vendingMachine;
-    vendingMachine.on();
-    vendingMachine.choice(0); // Выбор напитка
-    vendingMachine.finish();
-    EXPECT_EQ(vendingMachine.state, Automata::STATES::OFF);
-}
