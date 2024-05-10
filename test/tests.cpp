@@ -10,7 +10,7 @@ TEST(AutomataTest, IsOnTest) {
 }
 
 //тест на выключение автомата
-TEST(AutomataTest, IsOffTest){
+TEST(AutomataTest, IsOffTest) {
      Automata automata;
      automata.on();
      automata.off();
