@@ -2,7 +2,6 @@
 #include "Automata.h"
 #include <gtest/gtest.h>
 
-
 //тест на включение автомата
 TEST(AutomataTest, IsOnTest) {
 	Automata automata;
@@ -11,7 +10,7 @@ TEST(AutomataTest, IsOnTest) {
 }
 
 //тест на выключение автомата
-TEST(AutomataTest, IsOffTest) {
+TEST(AutomataTest, IsOffTest){
 	Automata automata;
 	automata.on();
 	automata.off();
@@ -87,5 +86,4 @@ TEST(AutomataTest, FinishTest) {
 	automata.finish();
 	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
-
 
