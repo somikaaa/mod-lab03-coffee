@@ -1,9 +1,10 @@
+#pragma once
 #include <iostream>
-#include <vector>
 #include <string>
+#include <vector>
 
 enum class STATES {
-    OFF, ON, READY, COOKING, FINISHED
+    OFF, WAIT, ACCEPT, CHECK, COOK
 };
 
 class Automata {
@@ -19,9 +20,11 @@ public:
     void on();
     void off();
     void coin(double amount);
+    void getMenu();  
+    STATES getState();  
     void choice(int index);
-    void check() const;
+    bool check(int index) ;
     void cancel();
-    void cook();
+    void cook(int index);
     void finish();
 };
