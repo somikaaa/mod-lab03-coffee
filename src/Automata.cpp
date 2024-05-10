@@ -76,7 +76,7 @@ bool Automata::check(int index) {
     if (state == STATES::CHECK) {
         if (cash >= prices[index]) {
             return true;
-        } 
+        }
             state == STATES::ACCEPT;
             return false;    }
     return false;
@@ -93,7 +93,7 @@ void Automata::cancel() {
 
 // Имитация процесса приготовления напитка
 void Automata::cook(int index) {
-    if (state == STATES::COOK) { 
+    if (state == STATES::COOK) {
         std::cout << "Cooking " << menu[index] << std::endl;
         std::cout << menu[index]<<" is ready." << std::endl;
         state = STATES::WAIT;
