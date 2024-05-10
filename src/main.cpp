@@ -2,21 +2,16 @@
 #include "Automata.h"
 
 int main() {
-    Automata vendingMachine;
+    Automata drinkMachine;
 
-    vendingMachine.on();
+    drinkMachine.on();
+    drinkMachine.getMenu();
 
-    vendingMachine.choice(0);
+    drinkMachine.coin(10);
+    drinkMachine.choice(1);
+    drinkMachine.finish();
 
-    vendingMachine.check();
-
-    vendingMachine.coin(100);
-
-    vendingMachine.check();
-
-    vendingMachine.cook();
-
-    vendingMachine.finish();
 
     return 0;
 }
+
