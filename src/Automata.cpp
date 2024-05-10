@@ -95,7 +95,7 @@ void Automata::cancel() {
 void Automata::cook(int index) {
     if (state == STATES::COOK) {
         std::cout << "Cooking " << menu[index] << std::endl;
-        std::cout << menu[index]<<" is ready." << std::endl;
+        std::cout << menu[index] << " is ready." << std::endl;
         state = STATES::WAIT;
     }
 }
