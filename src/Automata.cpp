@@ -1,7 +1,7 @@
 // Copyright 2022 UNN-IASR
 #include "Automata.h"
 
-using namespace std;
+
 Automata::Automata() : cash(0.0), state(STATES::OFF), choiceIndex(-1) {
     menu = { "Coffee",
         "Tea",
@@ -21,7 +21,7 @@ Automata::Automata() : cash(0.0), state(STATES::OFF), choiceIndex(-1) {
 void Automata::on() {
     if (state == STATES::OFF) {
         state = STATES::WAIT;
-        cout << "The drinks machine is on." << endl;
+        std::cout << "The drinks machine is on." << std::endl;
     }
 }
 
@@ -29,26 +29,26 @@ void Automata::on() {
 void Automata::off() {
     if (state == STATES::WAIT) {
         state = STATES::OFF;
-        cout << "The drinks machine is off." << endl;
+        std::cout << "The drinks machine is off." << std::endl;
     }
 }
 
 // Добавление средств на счет
 void Automata::coin(double amount) {
     if (state == STATES::WAIT || state == STATES::ACCEPT) {
-        cout << "Please deposit the money." << endl;
+        std::cout << "Please deposit the money." << std::endl;
         cash += amount;
         state = STATES::ACCEPT;
-        cout << "The money was deposited successfully." << endl;
-        cout << "The balance: " << cash << endl;
+        std::cout << "The money was deposited successfully." << std::endl;
+        std::cout << "The balance: " << cash << std::endl;
     }
 }
 
 void Automata::getMenu() {
-    cout << "Choose a drink" << endl;
-    cout << "Menu: " << endl;
+    std::cout << "Choose a drink" << std::endl;
+    std::cout << "Menu: " << std::endl;
     for (size_t i = 0; i < menu.size(); ++i) {
-        cout << i + 1<<". " << menu[i]<<": " << prices[i] << endl;
+        std::cout << i + 1 << ". " << menu[i] << ": " << prices[i] << std::endl;
     }
 }
 
@@ -63,33 +63,29 @@ void Automata::choice(int index) {
         state = STATES::CHECK;
         if (check(choiceIndex)) {
             state = STATES::COOK;
-            cout << "Selected drink: " << menu[index] << endl;
+            std::cout << "Selected drink: " << menu[index] << std::endl;
             cook(choiceIndex);
         } else if (!check(choiceIndex)) {
-            cout << "There are not enough funds in the account. Please deposit the money." << endl;
+            std::cout << "Please deposit the money." << std::endl;
         }
     }
 }
 
 // Проверка наличия необходимой суммы для покупки напитка
-bool Automata::check(int index)
-{
+bool Automata::check(int index) {
     if (state == STATES::CHECK) {
-        //return cash >= prices[index];
         if (cash >= prices[index]) {
             return true;
         } 
             state == STATES::ACCEPT;
-            return false;
-        
-    }
+            return false;    }
     return false;
 }
 
 // Отмена сеанса обслуживания
 void Automata::cancel() {
     if ((state == STATES::ACCEPT) || (state == STATES::CHECK)) {
-        cout << "Refund in the amount of "<< cash << endl;
+        std::cout << "Refund in the amount of "<< cash << std::endl;
         cash = 0;
         state = STATES::WAIT;
     }
@@ -98,14 +94,15 @@ void Automata::cancel() {
 // Имитация процесса приготовления напитка
 void Automata::cook(int index) {
     if (state == STATES::COOK) { 
-        cout << "Cooking " << menu[index] << endl;
-        cout << menu[index]<<" is ready." << endl; 
+        std::cout << "Cooking " << menu[index] << std::endl;
+        std::cout << menu[index]<<" is ready." << std::endl;
         state = STATES::WAIT;
     }
 }
 
 // Завершение обслуживания пользователя
 void Automata::finish() {
-    cout << "Thanks! Come back again!" << endl;
+    std::cout << "Thanks! Come back again!" << std::endl;
     state = STATES::WAIT;
 }
+
