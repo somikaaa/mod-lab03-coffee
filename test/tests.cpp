@@ -49,7 +49,7 @@ TEST(AutomataTest, CookTest1) {
 	automata.on();
 	automata.coin(50);
 	automata.choice(1);
-	EXPECT_EQ(automata.getState(), STATES::COOK);
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
 // тест на имитацию приготовления чая(2)
@@ -58,7 +58,7 @@ TEST(AutomataTest, CookTest2) {
 	automata.on();
 	automata.coin(50);
 	automata.choice(2);
-	EXPECT_EQ(automata.getState(), STATES::COOK);
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
 // тест на имитацию приготовления горячего шоколада(6)
@@ -67,14 +67,16 @@ TEST(AutomataTest, CookTest3) {
 	automata.on();
 	automata.coin(50);
 	automata.choice(6);
-	EXPECT_EQ(automata.getState(), STATES::COOK);
+	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
-//тест на имитацию выбора напитка без внесения денег
-TEST(AutomataTest, ChoiseWithoutMoneyTest) {
+//тест на имитацию отмены обслуживания и повторного внесения денег
+TEST(AutomataTest, CanselAndCoinTest) {
 	Automata automata;
 	automata.on();
-	automata.choice(6);
+	automata.coin(100);
+	automata.cancel();
+	automata.coin(50);
 	EXPECT_EQ(automata.getState(), STATES::ACCEPT);
 }
 
@@ -85,4 +87,5 @@ TEST(AutomataTest, FinishTest) {
 	automata.finish();
 	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
+
 
