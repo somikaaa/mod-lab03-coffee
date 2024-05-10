@@ -1,65 +1,111 @@
+// Copyright 2022 UNN-IASR
 #include "Automata.h"
 
-// Конструктор класса Automata инициализирует автомат с нулевой суммой на счету, выключенным состоянием, неопределенным индексом выбора и предустановленным меню
+using namespace std;
 Automata::Automata() : cash(0.0), state(STATES::OFF), choiceIndex(-1) {
-    // Предустановленное меню и цены
-    menu = { "Coffee", "Tea", "Syrup", "Sugar", "Milk"};
-    prices = { 5.0, 3.0, 0.5, 0.5, 0.5 };
+    menu = { "Coffee",
+        "Tea",
+        "Syrup",
+        "Sugar",
+        "Milk",
+        "Chocolate"};
+    prices = { 5.0,
+        3.0,
+        2.0,
+        1.0,
+        1.5,
+        4.0 };
 }
 
 // Включение автомата
 void Automata::on() {
-    state = STATES::ON; // Переключаем состояние на включенное
+    if (state == STATES::OFF) {
+        state = STATES::WAIT;
+        cout << "The drinks machine is on." << endl;
+    }
 }
 
 // Выключение автомата
 void Automata::off() {
-    state = STATES::OFF; // Переключаем состояние на выключенное
+    if (state == STATES::WAIT) {
+        state = STATES::OFF;
+        cout << "The drinks machine is off." << endl;
+    }
 }
 
 // Добавление средств на счет
 void Automata::coin(double amount) {
-    cash += amount; // Добавляем сумму к текущему балансу
+    if (state == STATES::WAIT || state == STATES::ACCEPT) {
+        cout << "Please deposit the money." << endl;
+        cash += amount;
+        state = STATES::ACCEPT;
+        cout << "The money was deposited successfully." << endl;
+        cout << "The balance: " << cash << endl;
+    }
+}
+
+void Automata::getMenu() {
+    cout << "Choose a drink" << endl;
+    cout << "Menu: " << endl;
+    for (size_t i = 0; i < menu.size(); ++i) {
+        cout << i + 1<<". " << menu[i]<<": " << prices[i] << endl;
+    }
+}
+
+STATES Automata::getState() {
+    return state;
 }
 
 // Выбор напитка пользователем
 void Automata::choice(int index) {
-    if (state == STATES::ON && index >= 0 && index < menu.size()) { // Проверяем, что автомат включен и выбрано действительное значение
-        choiceIndex = index; // Сохраняем выбранный индекс
-        if (cash >= prices[index]) { // Проверяем, достаточно ли средств
-            state = STATES::COOKING; // Переключаем состояние на приготовление
-            std::cout << "Выбран напиток: " << menu[index] << std::endl; // Выводим сообщение об успешном выборе
-        }
-        else {
-            std::cout << "Недостаточно средств." << std::endl; // Выводим сообщение об ошибке
+    if (state == STATES::ACCEPT && index >= 0 && index < menu.size()) {
+        choiceIndex = index;
+        state = STATES::CHECK;
+        if (check(choiceIndex)) {
+            state = STATES::COOK;
+            cout << "Selected drink: " << menu[index] << endl;
+            cook(choiceIndex);
+        } else if (!check(choiceIndex)) {
+            cout << "There are not enough funds in the account. Please deposit the money." << endl;
         }
     }
 }
 
 // Проверка наличия необходимой суммы для покупки напитка
-void Automata::check() const {
-    if (cash >= prices[choiceIndex]) { // Проверяем, достаточно ли средств
-        std::cout << "Достаточно средств." << std::endl; // Выводим сообщение об успехе
+bool Automata::check(int index)
+{
+    if (state == STATES::CHECK) {
+        //return cash >= prices[index];
+        if (cash >= prices[index]) {
+            return true;
+        } 
+            state == STATES::ACCEPT;
+            return false;
+        
     }
-    else {
-        std::cout << "Недостаточно средств." << std::endl; // Выводим сообщение об ошибке
-    }
+    return false;
 }
 
 // Отмена сеанса обслуживания
 void Automata::cancel() {
-    state = STATES::OFF; // Переключаем состояние на выключенное
+    if ((state == STATES::ACCEPT) || (state == STATES::CHECK)) {
+        cout << "Refund in the amount of "<< cash << endl;
+        cash = 0;
+        state = STATES::WAIT;
+    }
 }
 
 // Имитация процесса приготовления напитка
-void Automata::cook() {
-    if (state == STATES::COOKING) { // Проверяем, что автомат готовит напиток
-        std::cout << "Напиток готов." << std::endl; // Выводим сообщение о готовности напитка
-        state = STATES::FINISHED; // Переключаем состояние на завершенное
+void Automata::cook(int index) {
+    if (state == STATES::COOK) { 
+        cout << "Cooking " << menu[index] << endl;
+        cout << menu[index]<<" is ready." << endl; 
+        state = STATES::WAIT;
     }
 }
 
 // Завершение обслуживания пользователя
 void Automata::finish() {
-    state = STATES::OFF; // Переключаем состояние на выключенное
+    cout << "Thanks! Come back again!" << endl;
+    state = STATES::WAIT;
 }
