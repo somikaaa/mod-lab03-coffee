@@ -48,7 +48,7 @@ TEST(AutomataTest, CookTest1) {
 	Automata automata;
 	automata.on();
 	automata.coin(50);
-	automata.choice(1);
+	automata.choice(0);
 	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
@@ -57,7 +57,7 @@ TEST(AutomataTest, CookTest2) {
 	Automata automata;
 	automata.on();
 	automata.coin(50);
-	automata.choice(2);
+	automata.choice(1);
 	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
@@ -66,7 +66,7 @@ TEST(AutomataTest, CookTest3) {
 	Automata automata;
 	automata.on();
 	automata.coin(50);
-	automata.choice(6);
+	automata.choice(5);
 	EXPECT_EQ(automata.getState(), STATES::WAIT);
 }
 
